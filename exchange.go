@@ -20,6 +20,8 @@ type Client struct {
 
 // Gets the order book for XRP / SOLO
 func (c *Client) getOrdersSOLO() (bookorder *Response, err error) {
+
+	// Get the order book (commands / "request" being sent to XRPL)
 	cmd := Command{
 		ID:      4,
 		Command: "book_offers",
@@ -33,16 +35,23 @@ func (c *Client) getOrdersSOLO() (bookorder *Response, err error) {
 		Limit: 50,
 	}
 
+	// Send the command to XRPL via websocket
 	c.sendCommand(cmd.toJSON())
 
+	// Response struct
 	sr := Response{}
+
+	// Read the response from XRPL (from sendCommand function)
 	err = c.conn.ReadJSON(&sr)
+
+	// Check if there is an error in the response
 	err = c.checkErr(&sr)
 
 	if err != nil {
 		return
 	}
 
+	// Return the response
 	bookorder = sr.Result.Response
 
 	return
