@@ -1,4 +1,4 @@
-package main
+package data
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ type Client struct {
 }
 
 // Gets the order book for XRP / SOLO
-func (c *Client) getOrdersSOLO() (bookorder *Response, err error) {
+func (c *Client) GetOrdersSOLO() (bookorder *Response, err error) {
 
 	// Get the order book (commands / "request" being sent to XRPL)
 	cmd := Command{
@@ -100,7 +100,7 @@ func (c *Client) Ping() (err error) {
 }
 
 // Create a websocket connection to XRPL
-func createWebsocketConnection() (c Client, err error) {
+func CreateWebsocketConnection() (c Client, err error) {
 	u := url.URL{
 		Scheme: "ws",
 		Host:   "s2.ripple.com:443",

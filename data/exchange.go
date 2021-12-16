@@ -1,4 +1,4 @@
-package main
+package data
 
 import (
 	"encoding/json"
@@ -8,25 +8,25 @@ import (
 
 var uri = "https://openapi.bitrue.com"
 
-type bitruePrice struct {
+type BitruePrice struct {
 	Symbol string `json:"symbol"`
 	Price  string `json:"price"`
 }
 
-type bitruePrices struct {
+type BitruePrices struct {
 	Solo float64
 	XRP  float64
 }
 
 // Get price of symbol from bitrue
-func getBitruePrice(symbol string) (float64, error) {
+func GetBitruePrice(symbol string) (float64, error) {
 	resp, err := http.Get(uri + "/api/v1/ticker/price?symbol=" + symbol)
 	if err != nil {
 		return 0, err
 	}
 	defer resp.Body.Close()
 
-	var ticker bitruePrice
+	var ticker BitruePrice
 	if err := json.NewDecoder(resp.Body).Decode(&ticker); err != nil {
 		return 0, err
 	}
@@ -40,19 +40,16 @@ func getBitruePrice(symbol string) (float64, error) {
 }
 
 // Get all prices from bitrue
-func getAllBitruePrices() (bitruePrices, error) {
-	var bitruePrices bitruePrices
-	var err error
-
-	bitruePrices.Solo, err = getBitruePrice("SOLOUSDT")
+func GetAllBitruePrices() (bitruePrices BitruePrices, err error) {
+	bitruePrices.Solo, err = GetBitruePrice("SOLOUSDT")
 	if err != nil {
-		return bitruePrices, err
+		return
 	}
 
-	bitruePrices.XRP, err = getBitruePrice("XRPUSDT")
+	bitruePrices.XRP, err = GetBitruePrice("XRPUSDT")
 	if err != nil {
-		return bitruePrices, err
+		return
 	}
 
-	return bitruePrices, nil
+	return
 }

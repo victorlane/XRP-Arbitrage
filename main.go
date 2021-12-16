@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io/ioutil"
 
+	. "arbitrage/data"
+
 	"gopkg.in/yaml.v2"
 )
 
@@ -32,12 +34,12 @@ func main() {
 
 	// fmt.Println(bitrue.Solo)
 
-	c, err := createWebsocketConnection()
+	c, err := CreateWebsocketConnection()
 	if err != nil {
 		panic(err)
 	}
 
-	bookorder, err := c.getOrdersSOLO()
+	bookorder, err := c.GetOrdersSOLO()
 	if err != nil {
 		panic(err)
 	}
